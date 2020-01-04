@@ -37,7 +37,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="/home/jatin/Desktop/workspace/faceAppBackEnd/venv"
+VIRTUAL_ENV="/home/jatin/PycharmProjects/faceAppBackEnd/venv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"
