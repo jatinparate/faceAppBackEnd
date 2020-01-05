@@ -66,3 +66,7 @@ class UploadView(APIView):
             return JsonResponse({"is_uploaded": True})
         else:
             return JsonResponse({"is_uploaded": False})
+
+@method_decorator(csrf_exempt, name='dispatch')
+class RecognizeView(APIView):
+    pass
