@@ -21,7 +21,7 @@
     <table id="13" parent="2" name="django_content_type"/>
     <table id="14" parent="2" name="django_migrations"/>
     <table id="15" parent="2" name="django_session"/>
-    <table id="16" parent="2" name="faceAppBackend_photo"/>
+    <table id="16" parent="2" name="faceAppBackend_image"/>
     <table id="17" parent="2" name="sqlite_master">
       <System>1</System>
     </table>
@@ -478,7 +478,7 @@ model</ColNames>
       <DataType>datetime|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="107" parent="16" name="file">
+    <column id="107" parent="16" name="image">
       <Position>5</Position>
       <DataType>varchar(100)|0s</DataType>
       <NotNull>1</NotNull>
