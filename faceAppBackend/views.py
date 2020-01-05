@@ -34,7 +34,7 @@ class LoginView(View):
 
 
 @method_decorator(csrf_exempt, name='dispatch')
-class RecognizeView(View):
+class UploadView(View):
 
     def get(self, request, *args, **kwargs):
         return HttpResponse("Recognize View")

@@ -1,7 +1,7 @@
 from django.urls import path
-from .views import LoginView, RecognizeView
+from .views import LoginView, UploadView
 
 urlpatterns = [
     path('login/', LoginView.as_view()),
-    path('recognize/', RecognizeView.as_view(), name='uploader')
+    path('upload/', UploadView.as_view(), name='uploader')
 ]
