@@ -1,19 +1,18 @@
+import os
+import shutil
+
+import firebase_admin
 from django.http import HttpResponse, HttpRequest, JsonResponse
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import View
-
-import os, shutil
-
-from .helpers import modify_input_for_multiple_files, image_classifier
-
-import firebase_admin
 from firebase_admin import credentials, db
 from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.views import APIView
 
 from faceAppBackend.models import Image
 from faceAppBackend.serializers import ImageSerializer
+from .helpers import modify_input_for_multiple_files, image_classifier
 
 cred = credentials.Certificate(os.getcwd() + '/creds.json')
 firebase_app = firebase_admin.initialize_app(cred, {
@@ -90,9 +89,24 @@ class RecognizeView(APIView):
             except Exception as e:
                 print('Failed to delete %s. Reason: %s' % (file_path, e))
 
+        # get all students in given class and div from database
+        students = db.reference('/students/' + class_str + '/' + branch + '/').get()
+        list_of_students = []
+        for enrollment_no in students:
+            student = db.reference('/students/' + class_str + '/' + branch + '/' + enrollment_no).get()
+            is_present = False
+            for output_student in output_arr:
+                if output_student['predicted_enroll_no'] == enrollment_no:
+                    is_present = True
+            list_of_students.append({
+                'enrollment_no': enrollment_no,
+                'name': student['name'],
+                'is_present': is_present
+            })
         return JsonResponse({
             'class': class_str,
             'branch': branch,
-            'output': output_arr
+            # 'output': output_arr,
+            'students': list_of_students
         })
 
