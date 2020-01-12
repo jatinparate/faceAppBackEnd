@@ -5,7 +5,7 @@ from django.views.generic import View
 
 import os
 
-from .helpers import modify_input_for_multiple_files
+from .helpers import modify_input_for_multiple_files, image_classifier
 
 import firebase_admin
 from firebase_admin import credentials, db
@@ -70,4 +70,11 @@ class UploadView(APIView):
 
 @method_decorator(csrf_exempt, name='dispatch')
 class RecognizeView(APIView):
-    pass
+    def get(self, request):
+        image_classifier()
+        return HttpResponse('sdfsfdsfsd')
+
+    def post(self, request):
+        class_str = request.data['class_str']
+        branch = request.data['branch']
+
