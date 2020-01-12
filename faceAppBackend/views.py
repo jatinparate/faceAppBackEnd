@@ -1,5 +1,6 @@
 import os
 import shutil
+from datetime import date
 
 import firebase_admin
 from django.http import HttpResponse, HttpRequest, JsonResponse
@@ -110,3 +111,23 @@ class RecognizeView(APIView):
             'students': list_of_students
         })
 
+
+@method_decorator(csrf_exempt, name='dispatch')
+class MakePresense(APIView):
+    def post(self, request):
+        today = date.today()
+        students_ref = db.reference(
+            '/attendance/' +
+            request.data['class'] +
+            '/' +
+            request.data['division'] +
+            '/' +
+            today.strftime("%d%m%Y") +
+            '/'
+        )
+        students = students_ref.get()
+        for student in request.data['students']:
+            students[student['enrollment_no']] = student['is_present']
+        print(students)
+        students_ref.set(students)
+        return JsonResponse({'is_successful': True})
