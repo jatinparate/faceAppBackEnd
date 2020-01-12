@@ -3,7 +3,7 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import View
 
-import os
+import os, shutil
 
 from .helpers import modify_input_for_multiple_files, image_classifier
 
@@ -78,6 +78,18 @@ class RecognizeView(APIView):
         class_str = request.data['class_str']
         branch = request.data['branch']
         output_arr = image_classifier()
+
+        folder = os.path.join(os.getcwd(), 'media', 'images')
+        for filename in os.listdir(folder):
+            file_path = os.path.join(folder, filename)
+            try:
+                if os.path.isfile(file_path) or os.path.islink(file_path):
+                    os.unlink(file_path)
+                elif os.path.isdir(file_path):
+                    shutil.rmtree(file_path)
+            except Exception as e:
+                print('Failed to delete %s. Reason: %s' % (file_path, e))
+
         return JsonResponse({
             'class': class_str,
             'branch': branch,
