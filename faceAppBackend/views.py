@@ -71,10 +71,16 @@ class UploadView(APIView):
 @method_decorator(csrf_exempt, name='dispatch')
 class RecognizeView(APIView):
     def get(self, request):
-        image_classifier()
-        return HttpResponse('sdfsfdsfsd')
+        output_arr = image_classifier()
+        return JsonResponse({'output': output_arr})
 
     def post(self, request):
         class_str = request.data['class_str']
         branch = request.data['branch']
+        output_arr = image_classifier()
+        return JsonResponse({
+            'class': class_str,
+            'branch': branch,
+            'output': output_arr
+        })
 

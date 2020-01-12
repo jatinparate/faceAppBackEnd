@@ -20,10 +20,18 @@ def modify_input_for_multiple_files(property_id, branch, class_str, image):
 
 def image_classifier():
     cwd = os.getcwd()
+    output_dictionary = []
     for class_name in os.listdir(os.path.join(cwd, 'media', 'images')):
         for div_name in os.listdir(os.path.join(cwd, 'media', 'images', class_name)):
             for picture_name in os.listdir(os.path.join(cwd, 'media', 'images', class_name, div_name)):
-                print(class_names[recognize(class_name, div_name, picture_name)[0]])
+                predicted_class = class_names[recognize(class_name, div_name, picture_name)[0]]
+                output_dictionary.append({
+                    'class_name': class_name,
+                    'div_name': div_name,
+                    'picture_name': picture_name,
+                    'predicted_enroll_no': predicted_class
+                })
+    return output_dictionary
 
 
 def recognize(class_name, div_name, picture_name):
