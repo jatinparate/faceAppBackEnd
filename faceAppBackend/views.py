@@ -1,7 +1,8 @@
 import os
 import shutil
+import smtplib
+import ssl
 from datetime import date, datetime, timedelta
-import smtplib, ssl
 
 import firebase_admin
 from django.http import HttpResponse, HttpRequest, JsonResponse
@@ -429,6 +430,35 @@ class CreateTimeTable(APIView):
         return JsonResponse({
             'data': 'data'
         })
+
+
+@method_decorator(csrf_exempt, name='dispatch')
+class GetAllStudents(APIView):
+    def get(self, request):
+        return JsonResponse({
+            'ok': 'ok'
+        })
+
+    def post(self, request):
+        branch = request.data['branch']
+        class_str = request.data['class']
+        sem = request.data['sem']
+        students = db.reference('/students/' + branch + '/' + class_str).get() or {}
+        dataToSend = []
+        for student in students:
+            st = db.reference('/students/' + branch + '/' + class_str + '/' + student).get() or {}
+            if st.get('sem') == sem:
+                # st.enrollment_no = student
+                new_dict = {
+                    **st,
+                    'enrollment_no': student,
+                    'branch': branch,
+                    'class': class_str,
+                    'sem': sem
+                }
+                dataToSend.append(new_dict)
+
+        return JsonResponse({'data': dataToSend})
 
 
 @method_decorator(csrf_exempt, name='dispatch')

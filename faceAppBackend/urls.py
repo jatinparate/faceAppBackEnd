@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import LoginView, UploadView, RecognizeView, MakePresense,GetAverageAttendance, CreateTimeTable, SetSubjectCodes, GetSubjectNames, SendEmail
+from .views import LoginView, UploadView, RecognizeView, MakePresense, GetAllStudents, GetAverageAttendance, CreateTimeTable, SetSubjectCodes, GetSubjectNames, SendEmail
 
 urlpatterns = [
     path('login/', LoginView.as_view()),
@@ -11,4 +11,5 @@ urlpatterns = [
     path('createSubjectCodes/', SetSubjectCodes.as_view(), name='subjectCodesSetter'),
     path('getSubjectNames/', GetSubjectNames.as_view(), name='subjectNamesGetter'),
     path('sendEmail/', SendEmail.as_view(), name='emailSender'),
+    path('getStudentsList/', GetAllStudents.as_view(), name='studentsGetter'),
 ]
